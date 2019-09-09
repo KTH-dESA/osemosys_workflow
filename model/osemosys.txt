@@ -473,12 +473,12 @@ printf "\n" >> "processed_data/SelectedResults.csv";
         for {y in YEAR}{printf ",%g", y >> "processed_data/SelectedResults.csv";}
 		printf "\n" >> "processed_data/SelectedResults.csv";
 		for {r in REGION}{
-							for {f in FUEL} {printf "%s,", f >> "processed_data/SelectedResults.csv";
+							for {f in FUEL} {printf "%s", f >> "processed_data/SelectedResults.csv";
 											#printf ",%s", f >> "processed_data/SelectedResults.csv";
 											for {y in YEAR}{
 															#printf "\n" >> "processed_data/SelectedResults.csv";
                                                             #printf "%g", y >> "processed_data/SelectedResults.csv";
-                                                            printf "%g,", AccumulatedAnnualDemand[r,f,y] >> "processed_data/SelectedResults.csv";
+                                                            printf ",%g", AccumulatedAnnualDemand[r,f,y] >> "processed_data/SelectedResults.csv";
                                                             #printf "\n" >> "processed_data/SelectedResults.csv";
                                                             }
 															printf "\n" >> "processed_data/SelectedResults.csv";

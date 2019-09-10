@@ -427,7 +427,7 @@ solve;
 #
 #########################################################################################################
 #                                                                                                                                                                                                                #
-#         Summary results tables below are printed to a comma-separated file called "processed_data/SelectedResults.csv"                #
+#         Summary results tables below are printed to a comma-separated file called "FILEPATH"                #
 #        For a full set of results please see "Results.txt"                                                                                                        #
 #        If you don't want these printed, please comment-out or delete them.                                                                        #
 #                                                                                                                                                                                                                #
@@ -440,307 +440,307 @@ solve;
 #
 ###                Total costs and emissions by region        ###
 #
-printf "\n" > "processed_data/SelectedResults.csv";
-printf "Summary" >> "processed_data/SelectedResults.csv";
-for {r in REGION}         {printf ",%s", r >> "processed_data/SelectedResults.csv";
+printf "\n" > "FILEPATH";
+printf "Summary" >> "FILEPATH";
+for {r in REGION}         {printf ",%s", r >> "FILEPATH";
                                         }
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "Emissions" >> "processed_data/SelectedResults.csv";
-printf "\n" >> "processed_data/SelectedResults.csv";
+printf "\n" >> "FILEPATH";
+printf "Emissions" >> "FILEPATH";
+printf "\n" >> "FILEPATH";
 for {r in REGION}         {
                                         for {e in EMISSION}         {
-                                                                                        printf ",%s", e >> "processed_data/SelectedResults.csv";
-                                                                                        printf ",%g", sum{l in TIMESLICE, t in TECHNOLOGY, m in MODE_OF_OPERATION, y in YEAR: EmissionActivityRatio[r,t,e,m,y]<>0} EmissionActivityRatio[r,t,e,m,y]*RateOfActivity[r,l,t,m,y]*YearSplit[l,y] + ModelPeriodExogenousEmission[r,e] >> "processed_data/SelectedResults.csv";
-                                                                                        printf "\n" >> "processed_data/SelectedResults.csv";
+                                                                                        printf ",%s", e >> "FILEPATH";
+                                                                                        printf ",%g", sum{l in TIMESLICE, t in TECHNOLOGY, m in MODE_OF_OPERATION, y in YEAR: EmissionActivityRatio[r,t,e,m,y]<>0} EmissionActivityRatio[r,t,e,m,y]*RateOfActivity[r,l,t,m,y]*YearSplit[l,y] + ModelPeriodExogenousEmission[r,e] >> "FILEPATH";
+                                                                                        printf "\n" >> "FILEPATH";
                                                                                         }
                                         }
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "Cost" >> "processed_data/SelectedResults.csv";
-for {r in REGION} {printf ",%g", sum{t in TECHNOLOGY, y in YEAR}(((((sum{yy in YEAR: y-yy < OperationalLife[r,t] && y-yy>=0} NewCapacity[r,t,yy])+ ResidualCapacity[r,t,y])*FixedCost[r,t,y] + sum{m in MODE_OF_OPERATION, l in TIMESLICE} RateOfActivity[r,l,t,m,y]*YearSplit[l,y]*VariableCost[r,t,m,y])/((1+DiscountRate[r])^(y-min{yy in YEAR} min(yy)+0.5))+CapitalCost[r,t,y] * NewCapacity[r,t,y]/((1+DiscountRate[r])^(y-min{yy in YEAR} min(yy)))+DiscountedTechnologyEmissionsPenalty[r,t,y]-DiscountedSalvageValue[r,t,y]) + sum{s in STORAGE} (CapitalCostStorage[r,s,y] * NewStorageCapacity[r,s,y]/((1+DiscountRate[r])^(y-min{yy in YEAR} min(yy)))-CapitalCostStorage[r,s,y] * NewStorageCapacity[r,s,y]/((1+DiscountRate[r])^(y-min{yy in YEAR} min(yy))))) >> "processed_data/SelectedResults.csv";
+printf "\n" >> "FILEPATH";
+printf "Cost" >> "FILEPATH";
+for {r in REGION} {printf ",%g", sum{t in TECHNOLOGY, y in YEAR}(((((sum{yy in YEAR: y-yy < OperationalLife[r,t] && y-yy>=0} NewCapacity[r,t,yy])+ ResidualCapacity[r,t,y])*FixedCost[r,t,y] + sum{m in MODE_OF_OPERATION, l in TIMESLICE} RateOfActivity[r,l,t,m,y]*YearSplit[l,y]*VariableCost[r,t,m,y])/((1+DiscountRate[r])^(y-min{yy in YEAR} min(yy)+0.5))+CapitalCost[r,t,y] * NewCapacity[r,t,y]/((1+DiscountRate[r])^(y-min{yy in YEAR} min(yy)))+DiscountedTechnologyEmissionsPenalty[r,t,y]-DiscountedSalvageValue[r,t,y]) + sum{s in STORAGE} (CapitalCostStorage[r,s,y] * NewStorageCapacity[r,s,y]/((1+DiscountRate[r])^(y-min{yy in YEAR} min(yy)))-CapitalCostStorage[r,s,y] * NewStorageCapacity[r,s,y]/((1+DiscountRate[r])^(y-min{yy in YEAR} min(yy))))) >> "FILEPATH";
 }
-printf "\n" >> "processed_data/SelectedResults.csv";
+printf "\n" >> "FILEPATH";
 #
 ###         Time Independent demand        ###
 #
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "TID Demand" >> "processed_data/SelectedResults.csv";
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "\n" >> "processed_data/SelectedResults.csv";
-        for {r in REGION}{printf ",%s", r >> "processed_data/SelectedResults.csv";}
-        printf "\n" >> "processed_data/SelectedResults.csv";
-		printf "Fuel" >> "processed_data/SelectedResults.csv";
-		#printf "," >> "processed_data/SelectedResults.csv";
-        for {y in YEAR}{printf ",%g", y >> "processed_data/SelectedResults.csv";}
-		printf "\n" >> "processed_data/SelectedResults.csv";
+printf "\n" >> "FILEPATH";
+printf "TID Demand" >> "FILEPATH";
+printf "\n" >> "FILEPATH";
+printf "\n" >> "FILEPATH";
+        for {r in REGION}{printf ",%s", r >> "FILEPATH";}
+        printf "\n" >> "FILEPATH";
+		printf "Fuel" >> "FILEPATH";
+		#printf "," >> "FILEPATH";
+        for {y in YEAR}{printf ",%g", y >> "FILEPATH";}
+		printf "\n" >> "FILEPATH";
 		for {r in REGION}{
-							for {f in FUEL} {printf "%s", f >> "processed_data/SelectedResults.csv";
-											#printf ",%s", f >> "processed_data/SelectedResults.csv";
+							for {f in FUEL} {printf "%s", f >> "FILEPATH";
+											#printf ",%s", f >> "FILEPATH";
 											for {y in YEAR}{
-															#printf "\n" >> "processed_data/SelectedResults.csv";
-                                                            #printf "%g", y >> "processed_data/SelectedResults.csv";
-                                                            printf ",%g", AccumulatedAnnualDemand[r,f,y] >> "processed_data/SelectedResults.csv";
-                                                            #printf "\n" >> "processed_data/SelectedResults.csv";
+															#printf "\n" >> "FILEPATH";
+                                                            #printf "%g", y >> "FILEPATH";
+                                                            printf ",%g", AccumulatedAnnualDemand[r,f,y] >> "FILEPATH";
+                                                            #printf "\n" >> "FILEPATH";
                                                             }
-															printf "\n" >> "processed_data/SelectedResults.csv";
+															printf "\n" >> "FILEPATH";
 											}
-											#printf "\n" >> "processed_data/SelectedResults.csv";
+											#printf "\n" >> "FILEPATH";
 						}
 #
 ###         Time Dependent demand        ###
 #
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "Time Dependent Demand (Energy Units)" >> "processed_data/SelectedResults.csv";
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "\n" >> "processed_data/SelectedResults.csv";
-		for {r in REGION}{printf ",%s", r >> "processed_data/SelectedResults.csv";}
-        printf "\n" >> "processed_data/SelectedResults.csv";
-		printf "Fuel" >> "processed_data/SelectedResults.csv";
-		printf ",Timeslice" >> "processed_data/SelectedResults.csv";
-        for {y in YEAR}{printf ",%g", y >> "processed_data/SelectedResults.csv";}
-		printf "\n" >> "processed_data/SelectedResults.csv";
+printf "\n" >> "FILEPATH";
+printf "Time Dependent Demand (Energy Units)" >> "FILEPATH";
+printf "\n" >> "FILEPATH";
+printf "\n" >> "FILEPATH";
+		for {r in REGION}{printf ",%s", r >> "FILEPATH";}
+        printf "\n" >> "FILEPATH";
+		printf "Fuel" >> "FILEPATH";
+		printf ",Timeslice" >> "FILEPATH";
+        for {y in YEAR}{printf ",%g", y >> "FILEPATH";}
+		printf "\n" >> "FILEPATH";
         for {r in REGION }{
-							for {f in FUEL} {#printf "%s", f >> "processed_data/SelectedResults.csv";
-											 #printf "\n" >> "processed_data/SelectedResults.csv";
+							for {f in FUEL} {#printf "%s", f >> "FILEPATH";
+											 #printf "\n" >> "FILEPATH";
 											 for {l in TIMESLICE}{
-																  printf "%s", f >> "processed_data/SelectedResults.csv";
-																  printf ",%s", l >> "processed_data/SelectedResults.csv";
-																						  for {y in YEAR}{printf ",%g", SpecifiedAnnualDemand[r,f,y]*SpecifiedDemandProfile[r,f,l,y] >> "processed_data/SelectedResults.csv";
+																  printf "%s", f >> "FILEPATH";
+																  printf ",%s", l >> "FILEPATH";
+																						  for {y in YEAR}{printf ",%g", SpecifiedAnnualDemand[r,f,y]*SpecifiedDemandProfile[r,f,l,y] >> "FILEPATH";
 																										 }
-																										  printf "\n" >> "processed_data/SelectedResults.csv";
+																										  printf "\n" >> "FILEPATH";
 																 }
 											}
 							}
 #
 ###         Time Dependent production ###
 #
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "Time Dependent Production (Energy Units) Test" >> "processed_data/SelectedResults.csv";
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "\n" >> "processed_data/SelectedResults.csv";
-for {r in REGION}{printf ",%s", r >> "processed_data/SelectedResults.csv";}
-        printf "\n" >> "processed_data/SelectedResults.csv";
-		printf "Fuel" >> "processed_data/SelectedResults.csv";
-		printf ",Timeslice" >> "processed_data/SelectedResults.csv";
-        for {y in YEAR}{printf ",%g", y >> "processed_data/SelectedResults.csv";}
-		printf "\n" >> "processed_data/SelectedResults.csv";
+printf "\n" >> "FILEPATH";
+printf "Time Dependent Production (Energy Units) Test" >> "FILEPATH";
+printf "\n" >> "FILEPATH";
+printf "\n" >> "FILEPATH";
+for {r in REGION}{printf ",%s", r >> "FILEPATH";}
+        printf "\n" >> "FILEPATH";
+		printf "Fuel" >> "FILEPATH";
+		printf ",Timeslice" >> "FILEPATH";
+        for {y in YEAR}{printf ",%g", y >> "FILEPATH";}
+		printf "\n" >> "FILEPATH";
         for {r in REGION} {
-							for {f in FUEL} {#printf "%s", f >> "processed_data/SelectedResults.csv";
-                                             #printf "\n" >> "processed_data/SelectedResults.csv";
+							for {f in FUEL} {#printf "%s", f >> "FILEPATH";
+                                             #printf "\n" >> "FILEPATH";
                                              for {l in TIMESLICE}{
-                                                                  printf "%s", f >> "processed_data/SelectedResults.csv";
-																  printf ",%s", l >> "processed_data/SelectedResults.csv";
+                                                                  printf "%s", f >> "FILEPATH";
+																  printf ",%s", l >> "FILEPATH";
                                                                   for {y in YEAR }{
-                                                                                   printf ",%g", sum{m in MODE_OF_OPERATION, t in TECHNOLOGY: OutputActivityRatio[r,t,f,m,y] <>0} RateOfActivity[r,l,t,m,y]*OutputActivityRatio[r,t,f,m,y]*YearSplit[l,y] >> "processed_data/SelectedResults.csv";
+                                                                                   printf ",%g", sum{m in MODE_OF_OPERATION, t in TECHNOLOGY: OutputActivityRatio[r,t,f,m,y] <>0} RateOfActivity[r,l,t,m,y]*OutputActivityRatio[r,t,f,m,y]*YearSplit[l,y] >> "FILEPATH";
                                                                                   }
-                                                                                   printf "\n" >> "processed_data/SelectedResults.csv";
+                                                                                   printf "\n" >> "FILEPATH";
                                                                  }
                                             }
                            }
 #
 ####        Total Annual Capacity        ###
 #
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "TotalAnnualCapacity (Capacity Units)" >> "processed_data/SelectedResults.csv";
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "Technology" >> "processed_data/SelectedResults.csv";
-for {y in YEAR} {printf ",%s", y >> "processed_data/SelectedResults.csv";}
-printf "\n" >> "processed_data/SelectedResults.csv";
+printf "\n" >> "FILEPATH";
+printf "TotalAnnualCapacity (Capacity Units)" >> "FILEPATH";
+printf "\n" >> "FILEPATH";
+printf "Technology" >> "FILEPATH";
+for {y in YEAR} {printf ",%s", y >> "FILEPATH";}
+printf "\n" >> "FILEPATH";
 for {r in REGION}        {
                 for { t in TECHNOLOGY } {
-                                                        printf "%s", t >> "processed_data/SelectedResults.csv";
+                                                        printf "%s", t >> "FILEPATH";
                                                         for { y in YEAR } {
-                                                                                                        printf ",%g", ((sum{yy in YEAR: y-yy < OperationalLife[r,t] && y-yy>=0} NewCapacity[r,t,yy])+ ResidualCapacity[r,t,y]) >> "processed_data/SelectedResults.csv";
+                                                                                                        printf ",%g", ((sum{yy in YEAR: y-yy < OperationalLife[r,t] && y-yy>=0} NewCapacity[r,t,yy])+ ResidualCapacity[r,t,y]) >> "FILEPATH";
                                                                                                         }
-                                                        printf "\n" >> "processed_data/SelectedResults.csv";
+                                                        printf "\n" >> "FILEPATH";
                                                         }
                                         }
 #
 ####        New Annual Capacity        ###
 #
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "NewCapacity (Capacity Units )" >> "processed_data/SelectedResults.csv";
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "Technology" >> "processed_data/SelectedResults.csv";
-for {y in YEAR}         {printf ",%s", y >> "processed_data/SelectedResults.csv";}
-printf "\n" >> "processed_data/SelectedResults.csv";
+printf "\n" >> "FILEPATH";
+printf "NewCapacity (Capacity Units )" >> "FILEPATH";
+printf "\n" >> "FILEPATH";
+printf "Technology" >> "FILEPATH";
+for {y in YEAR}         {printf ",%s", y >> "FILEPATH";}
+printf "\n" >> "FILEPATH";
 for {r in REGION}        {
                                         for { t in TECHNOLOGY }         {
-                                                                                printf "%s", t >> "processed_data/SelectedResults.csv";
+                                                                                printf "%s", t >> "FILEPATH";
                                                                                 for { y in YEAR }         {
-                                                                                                                                        printf ",%g", NewCapacity[r,t,y] >> "processed_data/SelectedResults.csv";
+                                                                                                                                        printf ",%g", NewCapacity[r,t,y] >> "FILEPATH";
                                                                                                                                         }
-                                                                                printf "\n" >> "processed_data/SelectedResults.csv";
+                                                                                printf "\n" >> "FILEPATH";
                                                                                 }
                                         }
 #
 ### Annual Production ###
 #
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "Annual Production (Energy Units)" >> "processed_data/SelectedResults.csv";
-printf "\n" >> "processed_data/SelectedResults.csv";
-for {r in REGION}{printf ",%s", r >> "processed_data/SelectedResults.csv";}
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "Technology" >> "processed_data/SelectedResults.csv";
-printf ",Fuel" >> "processed_data/SelectedResults.csv";
-for {y in YEAR}{printf",%g",y >> "processed_data/SelectedResults.csv";}
-printf "\n" >> "processed_data/SelectedResults.csv";
+printf "\n" >> "FILEPATH";
+printf "\n" >> "FILEPATH";
+printf "Annual Production (Energy Units)" >> "FILEPATH";
+printf "\n" >> "FILEPATH";
+for {r in REGION}{printf ",%s", r >> "FILEPATH";}
+printf "\n" >> "FILEPATH";
+printf "Technology" >> "FILEPATH";
+printf ",Fuel" >> "FILEPATH";
+for {y in YEAR}{printf",%g",y >> "FILEPATH";}
+printf "\n" >> "FILEPATH";
 for{r in REGION}{
-					for {t in TECHNOLOGY}{#printf "%s", t >> "processed_data/SelectedResults.csv";
-														  #printf "\n" >> "processed_data/SelectedResults.csv";
+					for {t in TECHNOLOGY}{#printf "%s", t >> "FILEPATH";
+														  #printf "\n" >> "FILEPATH";
 														  for {f in FUEL }{
-																			printf "%s", t >> "processed_data/SelectedResults.csv";
-																			printf ",%s", f >> "processed_data/SelectedResults.csv";
-																		    for {y in YEAR}{printf ",%g", sum{m in MODE_OF_OPERATION, l in TIMESLICE: OutputActivityRatio[r,t,f,m,y] <>0} RateOfActivity[r,l,t,m,y]*OutputActivityRatio[r,t,f,m,y] * YearSplit[l,y] >> "processed_data/SelectedResults.csv";
+																			printf "%s", t >> "FILEPATH";
+																			printf ",%s", f >> "FILEPATH";
+																		    for {y in YEAR}{printf ",%g", sum{m in MODE_OF_OPERATION, l in TIMESLICE: OutputActivityRatio[r,t,f,m,y] <>0} RateOfActivity[r,l,t,m,y]*OutputActivityRatio[r,t,f,m,y] * YearSplit[l,y] >> "FILEPATH";
 																						   }
-																						   printf "\n" >> "processed_data/SelectedResults.csv";
+																						   printf "\n" >> "FILEPATH";
 																		  }
 										 }
-										 printf "\n" >> "processed_data/SelectedResults.csv";
+										 printf "\n" >> "FILEPATH";
 				}
 #
 ### Annual Use ###
 #
-#printf "\n" >> "processed_data/SelectedResults.csv";
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "Annual Use (Energy Units)" >> "processed_data/SelectedResults.csv";
-printf "\n" >> "processed_data/SelectedResults.csv";
-for {r in REGION} {printf ",%s", r >> "processed_data/SelectedResults.csv";
-                                        printf "\n" >> "processed_data/SelectedResults.csv";
-                                        printf "Technology" >> "processed_data/SelectedResults.csv";
-										printf ",Fuel" >> "processed_data/SelectedResults.csv";
-										#printf ",Timeslice" >> "processed_data/SelectedResults.csv";
-										for {y in YEAR}{printf",%g",y >> "processed_data/SelectedResults.csv";}
-										printf "\n" >> "processed_data/SelectedResults.csv";
-										for {t in TECHNOLOGY}{#printf "%s", t >> "processed_data/SelectedResults.csv";                                                                                       
-                                                              for {f in FUEL }{printf "%s", t >> "processed_data/SelectedResults.csv";
-																			   printf ",%s", f >> "processed_data/SelectedResults.csv";
-                                                                               for {y in YEAR}{printf ",%g", sum{m in MODE_OF_OPERATION, l in TIMESLICE: InputActivityRatio[r,t,f,m,y]<>0} RateOfActivity[r,l,t,m,y]*InputActivityRatio[r,t,f,m,y]*YearSplit[l,y] >> "processed_data/SelectedResults.csv";
+#printf "\n" >> "FILEPATH";
+printf "\n" >> "FILEPATH";
+printf "Annual Use (Energy Units)" >> "FILEPATH";
+printf "\n" >> "FILEPATH";
+for {r in REGION} {printf ",%s", r >> "FILEPATH";
+                                        printf "\n" >> "FILEPATH";
+                                        printf "Technology" >> "FILEPATH";
+										printf ",Fuel" >> "FILEPATH";
+										#printf ",Timeslice" >> "FILEPATH";
+										for {y in YEAR}{printf",%g",y >> "FILEPATH";}
+										printf "\n" >> "FILEPATH";
+										for {t in TECHNOLOGY}{#printf "%s", t >> "FILEPATH";                                                                                       
+                                                              for {f in FUEL }{printf "%s", t >> "FILEPATH";
+																			   printf ",%s", f >> "FILEPATH";
+                                                                               for {y in YEAR}{printf ",%g", sum{m in MODE_OF_OPERATION, l in TIMESLICE: InputActivityRatio[r,t,f,m,y]<>0} RateOfActivity[r,l,t,m,y]*InputActivityRatio[r,t,f,m,y]*YearSplit[l,y] >> "FILEPATH";
                                                                                               }
-                                                                                              printf "\n" >> "processed_data/SelectedResults.csv";
+                                                                                              printf "\n" >> "FILEPATH";
                                                                               }
-																			  #printf "\n" >> "processed_data/SelectedResults.csv";
+																			  #printf "\n" >> "FILEPATH";
 															  }
 				  }
 #
 ###                Technology Production in each TS ###
 #
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "ProductionByTechnology (Energy Units)" >> "processed_data/SelectedResults.csv";
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "\n" >> "processed_data/SelectedResults.csv";
-for {r in REGION} {printf ",%s", r >> "processed_data/SelectedResults.csv";
-        printf "\n" >> "processed_data/SelectedResults.csv";
-		printf "Technology" >> "processed_data/SelectedResults.csv";
-		printf ",Fuel" >> "processed_data/SelectedResults.csv";
-		printf ",Timeslice" >> "processed_data/SelectedResults.csv";
-        for {y in YEAR}{printf ",%g", y >> "processed_data/SelectedResults.csv";}
-		printf "\n" >> "processed_data/SelectedResults.csv";
-        for {t in TECHNOLOGY} {#printf "%s", t >> "processed_data/SelectedResults.csv";
-                                        #printf "\n" >> "processed_data/SelectedResults.csv";
+printf "\n" >> "FILEPATH";
+printf "ProductionByTechnology (Energy Units)" >> "FILEPATH";
+printf "\n" >> "FILEPATH";
+printf "\n" >> "FILEPATH";
+for {r in REGION} {printf ",%s", r >> "FILEPATH";
+        printf "\n" >> "FILEPATH";
+		printf "Technology" >> "FILEPATH";
+		printf ",Fuel" >> "FILEPATH";
+		printf ",Timeslice" >> "FILEPATH";
+        for {y in YEAR}{printf ",%g", y >> "FILEPATH";}
+		printf "\n" >> "FILEPATH";
+        for {t in TECHNOLOGY} {#printf "%s", t >> "FILEPATH";
+                                        #printf "\n" >> "FILEPATH";
                                         for {f in FUEL } {
-                                                #printf ",%s", f >> "processed_data/SelectedResults.csv";
-                                                for {l in TIMESLICE}{#printf ",%s", l >> "processed_data/SelectedResults.csv";
-														printf "%s", t >> "processed_data/SelectedResults.csv";
-														printf ",%s", f >> "processed_data/SelectedResults.csv";
-														printf ",%s", l >> "processed_data/SelectedResults.csv";
+                                                #printf ",%s", f >> "FILEPATH";
+                                                for {l in TIMESLICE}{#printf ",%s", l >> "FILEPATH";
+														printf "%s", t >> "FILEPATH";
+														printf ",%s", f >> "FILEPATH";
+														printf ",%s", l >> "FILEPATH";
                                                         for { y in YEAR} {
-                                                                                printf ",%g", sum{m in MODE_OF_OPERATION: OutputActivityRatio[r,t,f,m,y] <>0} RateOfActivity[r,l,t,m,y]*OutputActivityRatio[r,t,f,m,y] * YearSplit[l,y] >> "processed_data/SelectedResults.csv";
+                                                                                printf ",%g", sum{m in MODE_OF_OPERATION: OutputActivityRatio[r,t,f,m,y] <>0} RateOfActivity[r,l,t,m,y]*OutputActivityRatio[r,t,f,m,y] * YearSplit[l,y] >> "FILEPATH";
                                                                 }
-																printf "\n" >> "processed_data/SelectedResults.csv";
-																#printf "," >> "processed_data/SelectedResults.csv";
+																printf "\n" >> "FILEPATH";
+																#printf "," >> "FILEPATH";
                                                 }
-                                                #printf "\n" >> "processed_data/SelectedResults.csv";
+                                                #printf "\n" >> "FILEPATH";
                                         }
-										#printf "\n" >> "processed_data/SelectedResults.csv";
+										#printf "\n" >> "FILEPATH";
         }
 }
 #
 ###                Technology Use in each TS        ###
 #
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "Use By Technology (Energy Units)" >> "processed_data/SelectedResults.csv";
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "\n" >> "processed_data/SelectedResults.csv";
-for {r in REGION} {printf ",%s", r >> "processed_data/SelectedResults.csv";
-        printf "\n" >> "processed_data/SelectedResults.csv";
-		printf "Technology" >> "processed_data/SelectedResults.csv";
-		printf ",Fuel" >> "processed_data/SelectedResults.csv";
-		printf ",Timeslice" >> "processed_data/SelectedResults.csv";
-        for {y in YEAR}{printf ",%g", y >> "processed_data/SelectedResults.csv";}
-		printf "\n" >> "processed_data/SelectedResults.csv";
-        for {t in TECHNOLOGY} {#printf "%s", t >> "processed_data/SelectedResults.csv";
-										#printf "," >> "processed_data/SelectedResults.csv";
-                                        #for {f in FUEL}{printf",%s",f >> "processed_data/SelectedResults.csv";
+printf "\n" >> "FILEPATH";
+printf "Use By Technology (Energy Units)" >> "FILEPATH";
+printf "\n" >> "FILEPATH";
+printf "\n" >> "FILEPATH";
+for {r in REGION} {printf ",%s", r >> "FILEPATH";
+        printf "\n" >> "FILEPATH";
+		printf "Technology" >> "FILEPATH";
+		printf ",Fuel" >> "FILEPATH";
+		printf ",Timeslice" >> "FILEPATH";
+        for {y in YEAR}{printf ",%g", y >> "FILEPATH";}
+		printf "\n" >> "FILEPATH";
+        for {t in TECHNOLOGY} {#printf "%s", t >> "FILEPATH";
+										#printf "," >> "FILEPATH";
+                                        #for {f in FUEL}{printf",%s",f >> "FILEPATH";
                                                 #for {y in YEAR}{
-                                                        #printf ",%g", y >> "processed_data/SelectedResults.csv";
+                                                        #printf ",%g", y >> "FILEPATH";
                                                 #}
                                         #}
-                                        #printf "\n" >> "processed_data/SelectedResults.csv";
+                                        #printf "\n" >> "FILEPATH";
                                         for {f in FUEL} {
-                                                #printf "%s", f >> "processed_data/SelectedResults.csv";
-                                                for {l in TIMESLICE}{#printf ",%s", l >> "processed_data/SelectedResults.csv";
-														printf "%s", t >> "processed_data/SelectedResults.csv";
-														printf ",%s", f >> "processed_data/SelectedResults.csv";
-														printf ",%s", l >> "processed_data/SelectedResults.csv";
+                                                #printf "%s", f >> "FILEPATH";
+                                                for {l in TIMESLICE}{#printf ",%s", l >> "FILEPATH";
+														printf "%s", t >> "FILEPATH";
+														printf ",%s", f >> "FILEPATH";
+														printf ",%s", l >> "FILEPATH";
                                                         for { y in YEAR} {
-                                                                                printf ",%g", sum{m in MODE_OF_OPERATION: InputActivityRatio[r,t,f,m,y]<>0} RateOfActivity[r,l,t,m,y]*InputActivityRatio[r,t,f,m,y] * YearSplit[l,y] >> "processed_data/SelectedResults.csv";
+                                                                                printf ",%g", sum{m in MODE_OF_OPERATION: InputActivityRatio[r,t,f,m,y]<>0} RateOfActivity[r,l,t,m,y]*InputActivityRatio[r,t,f,m,y] * YearSplit[l,y] >> "FILEPATH";
                                                                 }
-																printf "\n" >> "processed_data/SelectedResults.csv";
+																printf "\n" >> "FILEPATH";
                                                 }
-												#printf "\n" >> "processed_data/SelectedResults.csv";
+												#printf "\n" >> "FILEPATH";
                                         }
-										#printf "\n" >> "processed_data/SelectedResults.csv";
+										#printf "\n" >> "FILEPATH";
         }
 }
 #
 ###                Total Annual Emissions        ###
 #
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "Annual Emissions (Emissions Units)" >> "processed_data/SelectedResults.csv";
-printf "\n" >> "processed_data/SelectedResults.csv";
-        for {r in REGION}{printf ",%s", r >> "processed_data/SelectedResults.csv";
-						printf "\n" >> "processed_data/SelectedResults.csv";
-						printf "," >> "processed_data/SelectedResults.csv";
-						for {y in YEAR} {printf ",%s", y >> "processed_data/SelectedResults.csv";}
-						printf "\n" >> "processed_data/SelectedResults.csv";
-						for {e in EMISSION}{printf ",%s", e >> "processed_data/SelectedResults.csv";
-											#printf "\n" >> "processed_data/SelectedResults.csv";
-											#printf "\n" >> "processed_data/SelectedResults.csv";
+printf "\n" >> "FILEPATH";
+printf "Annual Emissions (Emissions Units)" >> "FILEPATH";
+printf "\n" >> "FILEPATH";
+        for {r in REGION}{printf ",%s", r >> "FILEPATH";
+						printf "\n" >> "FILEPATH";
+						printf "," >> "FILEPATH";
+						for {y in YEAR} {printf ",%s", y >> "FILEPATH";}
+						printf "\n" >> "FILEPATH";
+						for {e in EMISSION}{printf ",%s", e >> "FILEPATH";
+											#printf "\n" >> "FILEPATH";
+											#printf "\n" >> "FILEPATH";
 											for {y in YEAR }{	
-															#printf "%g", y >> "processed_data/SelectedResults.csv";
-															printf ",%g", sum{l in TIMESLICE, t in TECHNOLOGY, m in MODE_OF_OPERATION: EmissionActivityRatio[r,t,e,m,y]<>0} EmissionActivityRatio[r,t,e,m,y]*RateOfActivity[r,l,t,m,y]*YearSplit[l,y] >> "processed_data/SelectedResults.csv";
-															#printf "\n" >> "processed_data/SelectedResults.csv";
+															#printf "%g", y >> "FILEPATH";
+															printf ",%g", sum{l in TIMESLICE, t in TECHNOLOGY, m in MODE_OF_OPERATION: EmissionActivityRatio[r,t,e,m,y]<>0} EmissionActivityRatio[r,t,e,m,y]*RateOfActivity[r,l,t,m,y]*YearSplit[l,y] >> "FILEPATH";
+															#printf "\n" >> "FILEPATH";
 															}
-															printf "\n" >> "processed_data/SelectedResults.csv";
+															printf "\n" >> "FILEPATH";
 											}				
 							}
 #
 ### Annual Emissions by Technology ###
 #
-printf "\n" >> "processed_data/SelectedResults.csv";
-printf "Annual Emissions by Technology (Emissions Units)" >> "processed_data/SelectedResults.csv";
-printf "\n" >> "processed_data/SelectedResults.csv";
-for {r in REGION} {printf ",%s", r >> "processed_data/SelectedResults.csv";
-                                        printf "\n" >> "processed_data/SelectedResults.csv";
-										printf "Technology" >> "processed_data/SelectedResults.csv";
-										printf ",Emission" >> "processed_data/SelectedResults.csv";
-										for {y in YEAR} {printf ",%s", y >> "processed_data/SelectedResults.csv";}
-										printf "\n" >> "processed_data/SelectedResults.csv";
-                                        for {t in TECHNOLOGY}         {#printf "%s", t >> "processed_data/SelectedResults.csv";
+printf "\n" >> "FILEPATH";
+printf "Annual Emissions by Technology (Emissions Units)" >> "FILEPATH";
+printf "\n" >> "FILEPATH";
+for {r in REGION} {printf ",%s", r >> "FILEPATH";
+                                        printf "\n" >> "FILEPATH";
+										printf "Technology" >> "FILEPATH";
+										printf ",Emission" >> "FILEPATH";
+										for {y in YEAR} {printf ",%s", y >> "FILEPATH";}
+										printf "\n" >> "FILEPATH";
+                                        for {t in TECHNOLOGY}         {#printf "%s", t >> "FILEPATH";
                                                                                         for {e in EMISSION}{
-																									printf "%s", t >> "processed_data/SelectedResults.csv";
-																									printf",%s",e >> "processed_data/SelectedResults.csv";
+																									printf "%s", t >> "FILEPATH";
+																									printf",%s",e >> "FILEPATH";
                                                                                                                         #}
-                                                                                        #printf "\n" >> "processed_data/SelectedResults.csv";
+                                                                                        #printf "\n" >> "FILEPATH";
                                                                                         #for {e in EMISSION}         {
-                                                                                                                                #printf "%g", y >> "processed_data/SelectedResults.csv";
+                                                                                                                                #printf "%g", y >> "FILEPATH";
                                                                                                                                 for {y in YEAR}{
-                                                                                                                                                                printf ",%g", sum{l in TIMESLICE, m in MODE_OF_OPERATION: EmissionActivityRatio[r,t,e,m,y]<>0} EmissionActivityRatio[r,t,e,m,y]*RateOfActivity[r,l,t,m,y]*YearSplit[l,y] >> "processed_data/SelectedResults.csv";
+                                                                                                                                                                printf ",%g", sum{l in TIMESLICE, m in MODE_OF_OPERATION: EmissionActivityRatio[r,t,e,m,y]<>0} EmissionActivityRatio[r,t,e,m,y]*RateOfActivity[r,l,t,m,y]*YearSplit[l,y] >> "FILEPATH";
                                                                                                                                                                 }
-                                                                                                                                printf "\n" >> "processed_data/SelectedResults.csv";
+                                                                                                                                printf "\n" >> "FILEPATH";
                                                                                                                                 }
-                                                #printf "\n" >> "processed_data/SelectedResults.csv";
+                                                #printf "\n" >> "FILEPATH";
                                                                                         }
                                         }
 end;

@@ -7,12 +7,13 @@ rule solve:
 	input: data="data/simplicity.txt", model="model/osemosys.txt"
 	output: results="processed_data/results.sol", default="processed_data/SelectedResults.csv"
 	log: "processed_data/glpsol.log"
+	conda: "env/osemosys.yaml"
 	shell:
 		"glpsol -d {input.data} -m {input.model} -o {output.results} --log {log}"
 
 rule clean:
 	shell:
-		"rm -f processed_data/*.pdf processed_data/*.sol processed_data/*.csv"
+		"rm -f processed_data/*.pdf processed_data/*.sol processed_data/*.csv *.png"
 
 rule clean_plots:
 	shell:
@@ -33,9 +34,18 @@ rule extract_total_annual_capacity:
 rule plot:
 	input: "processed_data/{result}.csv"
 	output: "processed_data/{result}.pdf"
+	conda: "env/plot.yaml"
 	shell:
 		"python scripts/plot_results.py {input} {output}"
 
-rule plot_dag:
+rule make_dag:
+	output: pipe("dag.txt")
 	shell:
-		"snakemake --dag | dot -Tpng > dag.png && open dag.png"
+		"snakemake --dag > {output}"
+
+rule plot_dag:
+	input: "dag.txt"
+	output: "dag.png"
+	conda: "env/dag.yaml"
+	shell:
+		"dot -Tpng {input} > dag.png && open dag.png"

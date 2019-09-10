@@ -35,3 +35,7 @@ rule plot:
 	output: "processed_data/{result}.pdf"
 	shell:
 		"python scripts/plot_results.py {input} {output}"
+
+rule plot_dag:
+	shell:
+		"snakemake --dag | dot -Tpng > dag.png && open dag.png"

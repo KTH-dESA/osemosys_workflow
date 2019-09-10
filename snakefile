@@ -2,6 +2,7 @@ RESULTS = ['tid_demand', 'total_annual_capacity']
 
 rule all:
 	input: expand("processed_data/{x}.pdf", x=RESULTS)
+	message: "Running pipeline to generate the files '{input}'"
 
 rule solve:
 	input: data="data/simplicity.txt", model="model/osemosys.txt"
@@ -9,7 +10,7 @@ rule solve:
 	log: "processed_data/glpsol.log"
 	conda: "env/osemosys.yaml"
 	shell:
-		"glpsol -d {input.data} -m {input.model} -o {output.results} --log {log}"
+		"glpsol -d {input.data} -m {input.model} -o {output.results} > {log}"
 
 rule clean:
 	shell:
@@ -35,6 +36,7 @@ rule plot:
 	input: "processed_data/{result}.csv"
 	output: "processed_data/{result}.pdf"
 	conda: "env/plot.yaml"
+	message: "Generating plot using '{input}' and writing to '{output}'"
 	shell:
 		"python scripts/plot_results.py {input} {output}"
 

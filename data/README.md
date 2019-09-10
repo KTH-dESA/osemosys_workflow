@@ -2,7 +2,10 @@
 
 This folder contains the Simplicity example CLEW model.
 
-It includes commodities/fuels which represent fossil fuels, biomass, various crops and biofuels, water and land.
+## Overview
+
+The Simplicity model includes commodities/fuels which represent fossil fuels, biomass, various crops and biofuels, water and land and 28 technologies which represent a full functioning CLEW model.
+
 
 Technology | Description | CapitalCost
 --- | --- | ---
@@ -35,3 +38,8 @@ SUGFACTORY | | 231.1
 TD | |
 TD2 | |
 WINDPOWER | |1845 
+
+## Data Sources
+
+### Capital Costs
+

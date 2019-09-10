@@ -21,7 +21,7 @@ rule solve:
 
 rule clean:
 	shell:
-		"rm -f processed_data/{modelrun}/*.pdf processed_data/{modelrun}/*.sol processed_data/{modelrun}/*.csv *.png"
+		"rm -f processed_data/*/*.pdf processed_data/*/*.sol processed_data/*/*.csv *.png"
 
 rule clean_plots:
 	shell:

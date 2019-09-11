@@ -701,10 +701,10 @@ printf "Annual Emissions (Emissions Units)" >> "processed_data/SelectedResults.c
 printf "\n" >> "processed_data/SelectedResults.csv";
         for {r in REGION}{printf ",%s", r >> "processed_data/SelectedResults.csv";
 						printf "\n" >> "processed_data/SelectedResults.csv";
-						printf "," >> "processed_data/SelectedResults.csv";
+						printf "Emission" >> "processed_data/SelectedResults.csv";
 						for {y in YEAR} {printf ",%s", y >> "processed_data/SelectedResults.csv";}
 						printf "\n" >> "processed_data/SelectedResults.csv";
-						for {e in EMISSION}{printf ",%s", e >> "processed_data/SelectedResults.csv";
+						for {e in EMISSION}{printf "%s", e >> "processed_data/SelectedResults.csv";
 											#printf "\n" >> "processed_data/SelectedResults.csv";
 											#printf "\n" >> "processed_data/SelectedResults.csv";
 											for {y in YEAR }{	

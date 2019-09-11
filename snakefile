@@ -1,5 +1,5 @@
 RESULTS = ['tid_demand', 'total_annual_capacity']
-RUNS = ['low', 'high']
+RUNS = ['low', 'central', 'high', '2degrees', '1.5degrees']
 
 rule all:
 	input: expand("processed_data/{modelrun}/{x}.pdf", x=RESULTS, modelrun=RUNS)

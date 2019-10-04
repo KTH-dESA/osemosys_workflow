@@ -12,4 +12,4 @@ rule solve:
 
 rule clean:
 	shell:
-		"rm -f processed_data/*.pdf processed_data/*.sol processed_data/*.csv *.png"
+		"rm -f processed_data/*.sol processed_data/*.csv"
